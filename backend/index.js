@@ -24,7 +24,7 @@ app.use(cookieParser());
 // cors
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["https://aicart-frontend.onrender.com", "https://aicart-admin.onrender.com"],
     credentials: true,
   })
 );
