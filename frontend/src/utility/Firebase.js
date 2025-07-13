@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD_ITN6Fvv-2p77IGbSgI0r0xO38KSGejA",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "aicart-db012.firebaseapp.com",
   projectId: "aicart-db012",
   storageBucket: "aicart-db012.firebasestorage.app",

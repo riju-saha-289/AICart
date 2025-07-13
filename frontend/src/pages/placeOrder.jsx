@@ -7,7 +7,6 @@ import razorpayLogo from "../assets/razorpaycover.avif";
 import { useNavigate } from "react-router";
 
 export default function PlaceOrder() {
-  console.log("Razorpay Key:", import.meta.env.VITE_RAZORPAY_API_KEY);
 
   const navigate = useNavigate();
   const {
