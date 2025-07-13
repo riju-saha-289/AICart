@@ -35,7 +35,7 @@ export const registration = async (req, res) => {
     res.cookie("access_token", token, {
       httpOnly: true,
       secure: true,
-      samesite: "None",
+      sameSite: "None",
       maxAge: 7 * 24 * 60 *60 *1000
     });
 
@@ -62,7 +62,7 @@ export const login = async (req, res) => {
     res.cookie("access_token", token, {
       httpOnly: true,
       secure: true,
-      samesite:"None",
+      sameSite:"None",
       maxAge: 7 * 24 * 60 *60 *1000
     });
     return res.status(400).json({ existUSer, message: "Loged in succesfully" });
@@ -99,7 +99,7 @@ export const loginWithGoogle = async (req, res) => {
     res.cookie("access_token", token, {
       httpOnly: true,
       secure: true,
-      samesite:"None",
+      sameSite:"None",
       maxAge: 7 * 24 * 60 *60 *1000
       
     });
@@ -117,7 +117,7 @@ export const adminLogin=async(req,res)=>{
       res.cookie("admin_token", admin_token, {
       httpOnly: true,
       secure: true,
-      samesite:"None",
+      sameSite:"None",
       maxAge: 7 * 24 * 60 *60 *1000
     });
     return res.status(201).json({ admin_token, message: "Loged in succesfully" });
