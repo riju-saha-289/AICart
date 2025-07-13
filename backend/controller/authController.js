@@ -34,8 +34,9 @@ export const registration = async (req, res) => {
     const token = generateToken(newUser._id);
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       samesite: "None",
+      maxAge: 7 * 24 * 60 *60 *1000
     });
 
     return res.status(201).json({ newUser, message: "Registration Succesful" });
@@ -60,8 +61,8 @@ export const login = async (req, res) => {
     const token = generateToken(existUSer._id);
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: false,
-      samesite:"strict",
+      secure: true,
+      samesite:"None",
       maxAge: 7 * 24 * 60 *60 *1000
     });
     return res.status(400).json({ existUSer, message: "Loged in succesfully" });
@@ -97,7 +98,10 @@ export const loginWithGoogle = async (req, res) => {
     const token = generateToken(existUSer._id);
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: false,
+      secure: true,
+      samesite:"None",
+      maxAge: 7 * 24 * 60 *60 *1000
+      
     });
     return res.status(201).json({ user:existUSer, message: " google Loged in succesfully" });
   } catch (err) {
@@ -112,8 +116,8 @@ export const adminLogin=async(req,res)=>{
       let admin_token=generateAdminToken(email)
       res.cookie("admin_token", admin_token, {
       httpOnly: true,
-      secure: false,
-      samesite:"strict",
+      secure: true,
+      samesite:"None",
       maxAge: 7 * 24 * 60 *60 *1000
     });
     return res.status(201).json({ admin_token, message: "Loged in succesfully" });
