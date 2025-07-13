@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext } from "react";
 import axios from "axios";
 
 const AdminContext = createContext();
-const backend_url = "http://localhost:8000";
+const backend_url = "https://aicart-backend.onrender.com";
 
 function AdminContextProvider({ children }) {
   const [adminData, setAdminData] = useState(null);
