@@ -5,7 +5,7 @@ import React from "react";
 const Context = createContext(null);
 
 function ContextProvider({ children }) {
-  const backend_url = "http://localhost:8000";
+  const backend_url = "https://aicart-backend.onrender.com";
 
   const [userData, setUserData] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
