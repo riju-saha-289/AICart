@@ -54,26 +54,27 @@ export default function LoginPage() {
     const user = result.user;
     const name = user.displayName;
     const email = user.email;
-    try {
-      const response = await axios.post(
-        `${backend_url}/api/Auth/googlelogin`,
-        { name, email },
-        { withCredentials: true }
-      );
-      console.log("Response:", response.data);
 
-      // IMPORTANT: await getCurrentUser before navigating or UI updates
-      await getCurrentUser();
+    const response = await axios.post(
+      `${backend_url}/api/Auth/googlelogin`,
+      { name, email },
+      { withCredentials: true }
+    );
+    console.log("Response:", response.data);
 
-      // Now navigate or update UI
+    // Wait for userData to be set correctly before navigation
+    await getCurrentUser();
+
+    // Slight delay (100ms) to ensure context updated before redirect
+    setTimeout(() => {
       navigate("/");
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    }, 100);
+
   } catch (error) {
-    console.error(error);
+    console.error("Error:", error);
   }
 };
+
 
 
   return (
