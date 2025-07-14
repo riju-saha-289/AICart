@@ -4,29 +4,39 @@ import axios from "axios";
 const AdminContext = createContext();
 const backend_url = "https://aicart-backend.onrender.com";
 
+
 function AdminContextProvider({ children }) {
   const [adminData, setAdminData] = useState(null);
+  const [loadingAdmin, setLoadingAdmin] = useState(true);
+
   const [products, setProducts] = useState([]);
   const [ordersData, setOrdersData] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
 
-  // Sidebar open/close state
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // Fetch admin info
   const getAdmin = async () => {
+    setLoadingAdmin(true);
     try {
       const response = await axios.get(`${backend_url}/api/user/getadmin`, {
         withCredentials: true,
       });
       setAdminData(response.data);
     } catch (error) {
-      console.error("Failed to get admin:", error);
-      setAdminData(null);
+      if (
+        error.response &&
+        (error.response.status === 400 || error.response.status === 401)
+      ) {
+        // User is not authenticated as admin - clear admin data
+        setAdminData(null);
+      } else {
+        console.error("Failed to get admin:", error);
+      }
+    } finally {
+      setLoadingAdmin(false);
     }
   };
 
-  // Fetch products
   const fetchProducts = async () => {
     try {
       const res = await axios.get(`${backend_url}/api/product/list`);
@@ -36,33 +46,46 @@ function AdminContextProvider({ children }) {
     }
   };
 
-  // Remove product with confirmation
   const removeProduct = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
+    if (!window.confirm("Are you sure you want to delete this product?"))
+      return;
     try {
-      await axios.post(`${backend_url}/api/product/remove/${id}`, {}, { withCredentials: true });
+      await axios.post(
+        `${backend_url}/api/product/remove/${id}`,
+        {},
+        { withCredentials: true }
+      );
       setProducts((prev) => prev.filter((product) => product._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
     }
   };
 
-  // Fetch all orders (admin)
   const fetchAllOrders = async () => {
     setLoadingOrders(true);
     try {
       const res = await axios.get(`${backend_url}/api/order/admin-orders`, {
         withCredentials: true,
+        // If your backend needs headers or params, add here
+        // headers: { Authorization: 'Bearer ...' },
+        // params: { limit: 20, page: 1 },
       });
       setOrdersData(res.data);
     } catch (err) {
-      console.error("Failed to fetch orders:", err);
+      if (err.response) {
+        console.error(
+          "Failed to fetch orders:",
+          err.response.status,
+          err.response.data
+        );
+      } else {
+        console.error("Failed to fetch orders:", err.message);
+      }
     } finally {
       setLoadingOrders(false);
     }
   };
 
-  // Update order status and update local state instantly
   const updateOrderStatus = async (orderId, status) => {
     try {
       const res = await axios.put(
@@ -92,7 +115,7 @@ function AdminContextProvider({ children }) {
   };
 
   useEffect(() => {
-    // getAdmin();
+    getAdmin();
     fetchProducts();
     fetchAllOrders();
   }, []);
@@ -102,6 +125,7 @@ function AdminContextProvider({ children }) {
     adminData,
     setAdminData,
     getAdmin,
+    loadingAdmin,
 
     products,
     setProducts,
@@ -114,12 +138,13 @@ function AdminContextProvider({ children }) {
     fetchAllOrders,
     updateOrderStatus,
 
-    // Sidebar state & setter
     sidebarOpen,
     setSidebarOpen,
   };
 
-  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
+  return (
+    <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
+  );
 }
 
 export { AdminContext, AdminContextProvider };
