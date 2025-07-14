@@ -8,7 +8,7 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../utility/Firebase";
 import { useContext } from "react";
 import { Context } from "../context/Context";
-
+import { useEffect } from "react";
 export default function LoginPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -74,7 +74,12 @@ export default function LoginPage() {
     console.error("Error:", error);
   }
 };
-
+useEffect(()=>{
+  setdata({
+      email: "",
+      password: "",
+    });
+},[])
 
 
   return (
