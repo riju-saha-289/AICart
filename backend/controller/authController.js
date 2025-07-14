@@ -74,11 +74,14 @@ export const login = async (req, res) => {
     });
     return res.status(200).json({ existingUser, message: "Logged in successfully" });
   } catch (err) {
-      if (error.response?.status === 403) {
-        alert(error.response.data.message);
-      } 
-    console.error("Login error:", err);
-    return res.status(500).json({ message: `Login error: ${err.message}` });
+    if (error.response?.status === 403) {
+      alert(error.response.data.message);
+    } 
+    else{
+      console.error("Login error:", err);
+      return res.status(500).json({ message: `Login error: ${err.message}` });
+    }
+    
   }
 };
 
