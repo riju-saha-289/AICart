@@ -92,7 +92,7 @@ function AdminContextProvider({ children }) {
   };
 
   useEffect(() => {
-    getAdmin();
+    // getAdmin();
     fetchProducts();
     fetchAllOrders();
   }, []);
