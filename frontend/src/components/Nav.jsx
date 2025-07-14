@@ -89,7 +89,7 @@ export default function Nav() {
   const handleLogout = async () => {
     if (window.confirm("Do you really want to logout?")) {
       await logout();
-      navigate("/");
+      navigate("/login");
     }
   };
 
