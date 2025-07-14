@@ -55,7 +55,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "User does not exist" });
     }
     if (existingUser && !existingUser.password) {
-      return res.status(400).json({
+      return res.status(403).json({
         message:
           "This account was created using Google. Please log in with Google or set a password.",
       });
@@ -74,6 +74,9 @@ export const login = async (req, res) => {
     });
     return res.status(200).json({ existingUser, message: "Logged in successfully" });
   } catch (err) {
+      if (error.response?.status === 403) {
+        alert(error.response.data.message);
+      } 
     console.error("Login error:", err);
     return res.status(500).json({ message: `Login error: ${err.message}` });
   }
