@@ -10,17 +10,13 @@ import Login from "./Login";
 export default function Nav() {
   const {backend_url,getAdmin}=useContext(AdminContext)
   const navigate = useNavigate();
-  const adminlogout=async()=>{
-     if (!window.confirm("Are you sure you want to LogOut?")) return;
-    const response=await axios.get(
-      `${backend_url}/api/Auth/adminlogout`,{
-        withCredentials:true
-      }
-    )
-    if (response.data){
-       getAdmin()
-    }
-  }
+  const adminlogout = async () => {
+    if (!window.confirm("Are you sure you want to LogOut?")) return;
+    await axios.get(`${backend_url}/api/Auth/adminlogout`, {
+      withCredentials: true,
+    });
+    getAdmin();
+  };
   return (
     <header className="bg-white shadow-md flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-2"
