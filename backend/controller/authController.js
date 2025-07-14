@@ -132,16 +132,13 @@ export const adminLogin = async (req, res) => {
   }
 };
 
-export const adminLogout = async (req, res) => {
+export const adminLogout =async(req,res)=>{
   try {
-    res.clearCookie("admin_token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      domain: ".onrender.com",  // Must match domain used when setting cookie
-    });
+  
+    res.clearCookie("admin_token");
     res.status(200).json({ message: "Admin Logged out successfully" });
   } catch (err) {
     res.status(500).json({ message: `Admin logout error ${err}` });
   }
-};
+  
+}
