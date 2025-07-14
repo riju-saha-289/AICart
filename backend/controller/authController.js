@@ -54,6 +54,12 @@ export const login = async (req, res) => {
     if (!existingUser) {
       return res.status(400).json({ message: "User does not exist" });
     }
+    if (existingUser && !existingUser.password) {
+      return res.status(400).json({
+        message:
+          "This account was created using Google. Please log in with Google or set a password.",
+      });
+    }
     const match = await bcrypt.compare(password, existingUser.password);
     if (!match) {
       return res.status(400).json({ message: "Incorrect password" });
@@ -124,7 +130,7 @@ export const adminLogin = async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        domain: ".onrender.com", // Make sure this matches your deployment domain
+        // domain: ".onrender.com", // Make sure this matches your deployment domain
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       return res.status(201).json({ admin_token, message: "Logged in successfully" });
@@ -138,8 +144,12 @@ export const adminLogin = async (req, res) => {
 
 export const adminLogout =async(req,res)=>{
   try {
-  
-    res.clearCookie("admin_token");
+    res.clearCookie("admin_token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      path: "/", // ✅ must match the path used during cookie creation
+    });
     res.status(200).json({ message: "Admin Logged out successfully" });
   } catch (err) {
     res.status(500).json({ message: `Admin logout error ${err}` });
